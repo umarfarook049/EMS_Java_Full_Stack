@@ -1,9 +1,11 @@
 node_modules
 /target/
-/out/
-.help/
-.mvn/
-*.class
+!.mvn/wrapper/maven-wrapper.jar
+/build/
+.metadata
+.classpath
 .project
 .settings/
-.classpath
+*.log
+*.jar
+*.war
