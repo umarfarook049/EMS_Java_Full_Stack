@@ -1,0 +1,9 @@
+Split the terminals for both frontend and backend then 
+
+1. How to run frontend : 
+Command : npm run dev
+2. How to run backend  : 
+no commands you can run directly by using run button and you should be in the Main java file present in the service repo
+
+Backend Database name : emsp
+Table name : employees
