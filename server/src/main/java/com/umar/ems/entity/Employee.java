@@ -66,11 +66,13 @@ public class Employee {
 
     @ElementCollection
     @CollectionTable(name = "employment_history", joinColumns = @JoinColumn(name = "employee_id"))
+    @OrderColumn(name = "list_order")
     private List<PreviousEmployment> employmentHistory = new ArrayList<>();
 
     // ---------- Project details (optional) ----------
     @ElementCollection
     @CollectionTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"))
+    @OrderColumn(name = "list_order")
     private List<ProjectAssignment> projects = new ArrayList<>();
 
     // ---------- Finance ----------
