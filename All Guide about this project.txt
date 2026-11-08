@@ -7,3 +7,54 @@ no commands you can run directly by using run button and you should be in the Ma
 
 Backend Database name : emsp
 Table name : employees
+
+
+How it behaves now
+Admin logs in (admin / Admin@123, or code 100001) and lands on the dashboard list. They can add, view, edit and delete employees, and use the green icon to save a month’s salary.
+Add Employee is one long form with Personal, Professional (with employment history), Project (optional), Finance, and the initial login password. Saving creates the employee and their login together.
+Edit: Employment Code, Gender, Date of Birth, Company Email, and Date of Joining are disabled once filled, and the backend ignores changes to them too.
+Employee logs in with their company email or 6-digit code and lands on their own details page. Everything is read-only, and the Finance section lists their last 6 months of payslips with PDF download.
+Errors: every field shows its message inline. Backend errors, such as a duplicate code or email, appear on the same fields.
+Things to know
+The seeded admin record is incomplete. Fill in its details through Edit when you want it complete. The locked fields can be set once if they were never filled.
+Existing test employees from earlier versions have no code or new details. Either edit them or delete and recreate them. Their logins still work, by email.
+CTC breakup: I store the annual CTC and three components but don’t force them to add up. If you want that rule, say so and I’ll add the check on both sides.
+PAN and Aadhar are visible to the admin in the edit form, and in the list API response. If you’d like them masked, I can do that.
+Password reset still doesn’t exist. Tell me if you want the admin to be able to reset an employee’s password.
+
+
+Login credentials
+
+Admin (created automatically on first startup from application.properties)
+
+Login with	Value
+Company email or employee code	admin@company.com or 100001
+Password	Admin@123
+
+You can also type admin as the login. If you changed app.admin.* in application.properties, use your values.
+
+User: no employee account exists by default, because only the admin can create them. Create this test one first (steps below), then log in with:
+
+Login with	Value
+Company email or employee code	john.doe@company.com or 100002
+Password	User@123
+Step 1: Create the test user (as admin)
+
+Log in as admin → Add Employee → enter these values (they all pass the validations):
+
+Section	Values
+Personal	Code 100002, First John, Last Doe, DOB 14-05-1998, Gender Male, Age 28, Mobile 9876543210, Personal Email john.personal@gmail.com, Emergency Contact Jane Doe / 9123456780
+Current & Permanent address (same for both)	Line 1 12 MG Road, Line 2 Near Bus Stand, City Proddatur, Pin 516360
+Professional	Company Email john.doe@company.com, Office Phone 0804012345, Office City Hyderabad, Office Address Tech Park / Gachibowli, Pin 500032, Reporting Manager 100001, HR Name Priya Sharma, Date of Joining 01-07-2024
+Finance	PAN ABCDE1234F, Aadhar 123456789012, Bank State Bank of India, Branch Proddatur, IFSC SBIN0001234, Annual CTC 600000, Basic 300000, HRA 150000, Allowances 150000
+Login Account	Initial Password User@123
+
+Employment history and projects are optional, so you can leave them empty. Click Submit.
+
+Step 2: Add salary so there are payslips (as admin)
+
+In the list, click the green Manage Salary icon on John Doe. Pick a month and year, enter for example Basic 25000, HRA 12500, Allowances 12500, Provident Fund 3000, Tax 2000, and click Save. Repeat for two or three different months. The employee will only see months you saved here.
+
+Step 3: Log in as the user
+
+Log out, then log in with john.doe@company.com / User@123.

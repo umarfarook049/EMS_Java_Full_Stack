@@ -1,31 +1,81 @@
-import './App.css'
-import EmployeeComponent from './components/EmployeeComponent'
-import FooterComponent from './components/FooterComponent'
-import HeaderComponent from './components/HeaderComponent'
-import ListEmployeeComponent from './components/ListEmployeeComponent'
-import { BrowserRouter , Routes ,Route } from 'react-router-dom'
+import "./App.css";
+import EmployeeComponent from "./components/EmployeeComponent";
+import FooterComponent from "./components/FooterComponent";
+import HeaderComponent from "./components/HeaderComponent";
+import ListEmployeeComponent from "./components/ListEmployeeComponent";
+import PayslipComponent from "./components/PayslipComponent";
+import LoginComponent from "./components/LoginComponent";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-
   return (
     <>
-    <BrowserRouter>
-      <HeaderComponent />
-      <Routes>
-        {/* http://localhost:3000 */}
-        <Route path='/' element= {<ListEmployeeComponent /> } ></Route>
-        {/* http://localhost:3000/employees */}
-        <Route path='/employees' element= {<ListEmployeeComponent /> } ></Route>
-        {/* http://localhost:3000/add-employee */}
-        <Route path='/add-employee' element= {<EmployeeComponent /> } ></Route>
-        {/* http://localhost:3000/edit-employee/1 */}
-        <Route path='/edit-employee/:id' element= {<EmployeeComponent /> } ></Route>
-        <Route path='/view-employee/:id' element={<EmployeeComponent isView={true} />} />
-      </Routes>
-      <FooterComponent />
-    </BrowserRouter>
+      <BrowserRouter>
+        <div className="d-flex flex-column min-vh-100">
+          <HeaderComponent />
+          <main className="flex-grow-1">
+            <Routes>
+              <Route path="/login" element={<LoginComponent />} />
+
+              {/* Employee dashboard (own record; the backend enforces "own only") */}
+              <Route
+                path="/view-employee/:id"
+                element={
+                  <ProtectedRoute>
+                    <EmployeeComponent isView={true} />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Admin dashboard and management */}
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute adminOnly>
+                    <ListEmployeeComponent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employees"
+                element={
+                  <ProtectedRoute adminOnly>
+                    <ListEmployeeComponent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/add-employee"
+                element={
+                  <ProtectedRoute adminOnly>
+                    <EmployeeComponent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/edit-employee/:id"
+                element={
+                  <ProtectedRoute adminOnly>
+                    <EmployeeComponent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/payslip/:id"
+                element={
+                  <ProtectedRoute adminOnly>
+                    <PayslipComponent />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </main>
+          <FooterComponent />
+        </div>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

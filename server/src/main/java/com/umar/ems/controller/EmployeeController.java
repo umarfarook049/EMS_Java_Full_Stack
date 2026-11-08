@@ -3,10 +3,13 @@ package com.umar.ems.controller;
 import com.umar.ems.dto.EmployeeDto;
 import com.umar.ems.entity.Employee;
 import com.umar.ems.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -22,39 +25,42 @@ public class EmployeeController {
 
     // Build Add Employee REST API
     @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EmployeeDto> createEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
         EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
     // Build Get Employee REST API
-
     @GetMapping("{id}")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") Long employeeId){
-        EmployeeDto employeeDto =  employeeService.getEmployeeById(employeeId);
+    @PreAuthorize("hasRole('ADMIN') or @accessChecker.isOwner(authentication, #employeeId)")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") Long employeeId) {
+        EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
         return ResponseEntity.ok(employeeDto);
     }
 
     // Build Get All Employees REST API
-
     @GetMapping
-    public ResponseEntity<List<EmployeeDto>> getAllEmployees(){
-        List<EmployeeDto> employees =  employeeService.getAllEmployees();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
+        List<EmployeeDto> employees = employeeService.getAllEmployees();
         return ResponseEntity.ok(employees);
     }
 
-    //Update Employee REST API
+    // Update Employee REST API
 
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Long employeeid,
-                                                      @RequestBody EmployeeDto updatedEmployee){
-         EmployeeDto employeeDto =  employeeService.updateEmployee(employeeid,updatedEmployee);
-         return ResponseEntity.ok(employeeDto);
+            @Valid @RequestBody EmployeeDto updatedEmployee) {
+        EmployeeDto employeeDto = employeeService.updateEmployee(employeeid, updatedEmployee);
+        return ResponseEntity.ok(employeeDto);
     }
 
     // Delete Employee By Id
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteEmployeeById(@PathVariable("id") Long employeeid){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteEmployeeById(@PathVariable("id") Long employeeid) {
         employeeService.deleteEmployee(employeeid);
         return ResponseEntity.ok("Employeed Successfully Deleted..!");
     }

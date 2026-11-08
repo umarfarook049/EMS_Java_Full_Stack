@@ -1,91 +1,104 @@
-import React, { useEffect, useState } from 'react'
-import { deleteEmployee, listEmployees } from '../services/EmployeeService'
-import { useNavigate } from 'react-router-dom'
-import { FaRegEdit, FaRegTrashAlt, FaRegEye } from 'react-icons/fa' // Importing the outlined icons
+import React, { useEffect, useState } from "react";
+import { deleteEmployee, listEmployees } from "../services/EmployeeService";
+import { useNavigate } from "react-router-dom";
+import {
+  FaRegEdit,
+  FaRegTrashAlt,
+  FaRegEye,
+  FaMoneyBillWave,
+} from "react-icons/fa";
 
 const ListEmployeeComponent = () => {
+  const [employees, setEmployees] = useState([]);
+  const navigator = useNavigate();
 
-    const [Employees, setEmployees] = useState([])
-    const navigator = useNavigate()
+  useEffect(() => {
+    getAllEmployees();
+  }, []);
 
-    useEffect(() => {
-        getAllEmployees();
-    }, [])
+  function getAllEmployees() {
+    listEmployees()
+      .then((response) => setEmployees(response.data))
+      .catch((error) => console.error(error));
+  }
 
-    function getAllEmployees() {
-        listEmployees().then((response) => {
-            setEmployees(response.data);
-        }).catch(error => {
-            console.error(error);
-        })
-    }
+  function removeEmployee(employee) {
+    if (!window.confirm(`Delete ${employee.firstName} ${employee.lastName}?`))
+      return;
 
-    function addNewEmployee() {
-        navigator('/add-employee')
-    }
+    deleteEmployee(employee.id)
+      .then(() => getAllEmployees())
+      .catch((error) => {
+        window.alert(
+          error.response?.data?.message || "Failed to delete employee",
+        );
+      });
+  }
 
-    function updateEmployee(id) {
-        navigator(`/edit-employee/${id}`)
-    }
+  return (
+    <div className="container">
+      <h2 className="text-center mt-5">List of Employees</h2>
 
-    function removeEmployee(id) {
-        deleteEmployee(id).then((response) => {
-            getAllEmployees();
-        }).catch(error => {
-            console.error(error);
-        })
-    }
+      <button
+        className="btn btn-dark mb-3 mt-2"
+        onClick={() => navigator("/add-employee")}
+      >
+        Add Employee
+      </button>
 
-    function viewEmployee(id) {
-        navigator(`/view-employee/${id}`) // Navigate to a new route to view the employee details
-    }
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Employment Code</th>
+            <th>Name</th>
+            <th>Company Email</th>
+            <th>Manager Name</th>
+            <th>Current Project</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {employees.map((employee) => (
+            <tr key={employee.id}>
+              <td>{employee.employeeCode || "-"}</td>
+              <td>
+                {employee.firstName} {employee.lastName}
+              </td>
+              <td>{employee.email}</td>
+              <td>{employee.managerName || "-"}</td>
+              <td>{employee.currentProjectName || "-"}</td>
+              <td>
+                <FaRegEye
+                  className="text-primary"
+                  style={{ cursor: "pointer", marginRight: "15px" }}
+                  title="View"
+                  onClick={() => navigator(`/view-employee/${employee.id}`)}
+                />
+                <FaRegEdit
+                  className="text-info"
+                  style={{ cursor: "pointer", marginRight: "15px" }}
+                  title="Edit"
+                  onClick={() => navigator(`/edit-employee/${employee.id}`)}
+                />
+                <FaMoneyBillWave
+                  className="text-success"
+                  style={{ cursor: "pointer", marginRight: "15px" }}
+                  title="Manage salary"
+                  onClick={() => navigator(`/payslip/${employee.id}`)}
+                />
+                <FaRegTrashAlt
+                  className="text-danger"
+                  style={{ cursor: "pointer" }}
+                  title="Delete"
+                  onClick={() => removeEmployee(employee)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
-    return (
-        <div className='container'>
-            <h2 className='text-center mt-5'>List of Employees</h2>
-            <button className='btn btn-dark mb-3 mt-2' onClick={addNewEmployee}>Add Employee</button>
-            <table className='table table-striped table-bordered'>
-                <thead>
-                    <tr>
-                        <th>Employee Id</th>
-                        <th>Employee First Name</th>
-                        <th>Employee Last Name</th>
-                        <th>Employee Email Id</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        Employees.map(employee =>
-                            <tr key={employee.id}>
-                                <td>{employee.id}</td>
-                                <td>{employee.firstName}</td>
-                                <td>{employee.lastName}</td>
-                                <td>{employee.email}</td>
-                                <td>
-                                    <FaRegEye 
-                                        className="text-primary" 
-                                        style={{ cursor: 'pointer', marginRight: '15px' }} 
-                                        onClick={() => viewEmployee(employee.id)} 
-                                    /> {/* View Icon */}
-                                    <FaRegEdit 
-                                        className="text-info" 
-                                        style={{ cursor: 'pointer', marginRight: '15px' }} 
-                                        onClick={() => updateEmployee(employee.id)} 
-                                    /> {/* Edit Icon */}
-                                    <FaRegTrashAlt 
-                                        className="text-danger" 
-                                        style={{ cursor: 'pointer' }} 
-                                        onClick={() => removeEmployee(employee.id)} 
-                                    /> {/* Delete Icon */}
-                                </td>
-                            </tr>
-                        )
-                    }
-                </tbody>
-            </table>
-        </div>
-    )
-}
-
-export default ListEmployeeComponent
+export default ListEmployeeComponent;
