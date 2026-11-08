@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const REST_API_BASE_URL = "http://localhost:8080/api/employees";
+const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const REST_API_BASE_URL = `${API}/api/employees`;
 
 // Add a request interceptor to attach the JWT token to headers if available
 axios.interceptors.request.use(
