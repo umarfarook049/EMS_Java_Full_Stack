@@ -8,6 +8,6 @@ RUN mvn -q clean package -DskipTests
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-ENV JAVA_TOOL_OPTIONS="-Xmx350m -XX:+UseSerialGC"
+ENV JAVA_TOOL_OPTIONS="-Xmx320m -XX:+UseSerialGC -XX:TieredStopAtLevel=1"
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
