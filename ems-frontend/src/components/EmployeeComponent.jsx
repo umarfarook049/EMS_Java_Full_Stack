@@ -443,10 +443,7 @@ const EmployeeComponent = ({ isView }) => {
                   </label>
                   <input
                     type={col.type}
-                    className={inputClass(
-                      errKey,
-                      "form-control form-control-sm",
-                    )}
+                    className={inputClass(errKey, "form-control")}
                     value={item[col.key] ?? ""}
                     disabled={isView}
                     onChange={(e) =>
@@ -499,35 +496,37 @@ const EmployeeComponent = ({ isView }) => {
         {payslips.length === 0 ? (
           <p className="text-muted">No payslips available yet.</p>
         ) : (
-          <table className="table table-sm table-bordered">
-            <thead>
-              <tr>
-                <th>Month</th>
-                <th>Net Pay (Rs.)</th>
-                <th>Download</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payslips.map((p) => (
-                <tr key={`${p.year}-${p.month}`}>
-                  <td>
-                    {MONTHS[p.month - 1]} {p.year}
-                  </td>
-                  <td>{netPay(p)}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-success btn-sm"
-                      onClick={() => handleDownload(p.month, p.year)}
-                    >
-                      <FaFileDownload style={{ marginRight: "6px" }} />
-                      PDF
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Net Pay (Rs.)</th>
+                  <th>Download</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {payslips.map((p) => (
+                  <tr key={`${p.year}-${p.month}`}>
+                    <td>
+                      {MONTHS[p.month - 1]} {p.year}
+                    </td>
+                    <td>{netPay(p)}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-success btn-sm"
+                        onClick={() => handleDownload(p.month, p.year)}
+                      >
+                        <FaFileDownload style={{ marginRight: "6px" }} />
+                        PDF
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     );
@@ -598,9 +597,11 @@ const EmployeeComponent = ({ isView }) => {
             )}
 
             {!isView && (
-              <button className="btn btn-dark mb-4" type="submit">
-                Submit
-              </button>
+              <div className="d-grid d-md-block mb-4">
+                <button className="btn btn-dark" type="submit">
+                  Submit
+                </button>
+              </div>
             )}
           </form>
         </div>

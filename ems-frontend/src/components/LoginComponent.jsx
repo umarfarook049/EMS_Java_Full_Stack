@@ -40,7 +40,7 @@ const LoginComponent = () => {
       <br />
       <br />
       <div className="row">
-        <div className="card col-md-4 offset-md-4">
+        <div className="card col-12 col-sm-10 col-md-6 col-lg-4 mx-auto">
           <h2 className="text-center mt-2">Login</h2>
           <div className="card-body">
             {error && <div className="alert alert-danger">{error}</div>}

@@ -1,3 +1,13 @@
 .ft {
   background-color: #212529;
 }
+
+/* Responsive tweaks */
+@media (max-width: 767.98px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+  .card-body {
+    padding: 1rem;
+  }
+}
