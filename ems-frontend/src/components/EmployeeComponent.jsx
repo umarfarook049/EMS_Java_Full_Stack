@@ -378,7 +378,7 @@ const EmployeeComponent = ({ isView }) => {
     `${base} ${errors[key] ? "is-invalid" : ""}`;
 
   function renderField(def) {
-    const disabled = isView || (isEdit && def.locked && !!original[def.key]);
+    const disabled = isView;
     return (
       <div className="col-md-6 mb-2" key={def.key}>
         <label className="form-label">{def.label} :</label>

@@ -1,51 +1,78 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getSession, logout } from "../services/AuthService";
+import { getSession, isAdmin, logout } from "../services/AuthService";
 
 const HeaderComponent = () => {
   const navigate = useNavigate();
-  useLocation(); // re-render on route change so login/logout state stays fresh
+  const { pathname } = useLocation(); // also re-renders on route change
   const session = getSession();
+  const admin = isAdmin();
   const [open, setOpen] = useState(false);
 
-  function handleLogout() {
+  const go = (path) => {
+    setOpen(false);
+    navigate(path);
+  };
+
+  const handleLogout = () => {
     logout();
     setOpen(false);
     navigate("/login");
-  }
+  };
+
+  const title = !session
+    ? "Employee Management System"
+    : admin
+      ? "Admin Dashboard"
+      : "Employee Dashboard";
+
+  const dashboardActive = pathname === "/" || pathname.startsWith("/employees");
+  const addActive = pathname.startsWith("/add-employee");
+  const profileActive = pathname.startsWith("/view-employee");
 
   return (
-    <header>
-      <nav className="navbar navbar-expand-md navbar-dark bg-dark px-3">
-        <span className="navbar-brand mb-0 h1">Employee Management System</span>
+    <header className="app-header">
+      <span className="app-brand">{title}</span>
 
-        {session && (
-          <>
-            <button
-              className="navbar-toggler"
-              type="button"
-              aria-label="Toggle navigation"
-              onClick={() => setOpen(!open)}
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-
-            <div className={`collapse navbar-collapse ${open ? "show" : ""}`}>
-              <div className="ms-auto d-flex flex-column flex-md-row align-items-md-center gap-2 mt-2 mt-md-0 text-white">
-                <span className="text-break">
-                  {session.username} ({session.role})
-                </span>
+      {session && (
+        <>
+          <button
+            className="app-toggler"
+            aria-label="Toggle menu"
+            onClick={() => setOpen(!open)}
+          >
+            &#9776;
+          </button>
+          <nav className={`app-nav ${open ? "open" : ""}`}>
+            {admin ? (
+              <>
                 <button
-                  className="btn btn-outline-light btn-sm"
-                  onClick={handleLogout}
+                  className={dashboardActive ? "active" : ""}
+                  onClick={() => go("/employees")}
                 >
-                  Logout
+                  Dashboard
                 </button>
-              </div>
-            </div>
-          </>
-        )}
-      </nav>
+                <button
+                  className={addActive ? "active" : ""}
+                  onClick={() => go("/add-employee")}
+                >
+                  Add Employee
+                </button>
+              </>
+            ) : (
+              <button
+                className={profileActive ? "active" : ""}
+                onClick={() => go(`/view-employee/${session.employeeId}`)}
+              >
+                Profile
+              </button>
+            )}
+            <button className="btn-logout" onClick={handleLogout}>
+              Log Out
+            </button>
+          </nav>
+        </>
+      )}
     </header>
   );
 };

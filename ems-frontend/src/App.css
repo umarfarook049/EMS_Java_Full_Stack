@@ -1,13 +1,289 @@
-.ft {
-  background-color: #212529;
+/* ---------- Theme ---------- */
+:root {
+  --brand: #d97706;
+  --brand-dark: #b45309;
 }
 
-/* Responsive tweaks */
+body {
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Roboto,
+    sans-serif;
+  color: #111827;
+}
+
+/* Header */
+.app-header {
+  background: var(--brand);
+  color: #fff;
+  padding: 1.1rem 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.app-brand {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+/* Header navigation: plain links with a hover effect only */
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.app-nav button {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0.25rem 0;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.92;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+.app-nav button:hover,
+.app-nav button:focus-visible {
+  opacity: 1;
+  transform: translateY(-2px);
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
+  outline: none;
+}
+
+.app-nav button:active {
+  transform: translateY(0);
+}
+
+.app-toggler {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  font-size: 1.4rem;
+  border-radius: 6px;
+  padding: 0.1rem 0.6rem;
+  cursor: pointer;
+}
+
+/* Buttons: existing btn-dark buttons become orange */
+.btn-brand,
+.btn-dark {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.btn-brand {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+.btn-brand:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(217, 119, 6, 0.35);
+}
+
+.btn-brand:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-brand:hover,
+.btn-dark:hover,
+.btn-dark:active,
+.btn-dark:focus {
+  background-color: var(--brand-dark) !important;
+  border-color: var(--brand-dark) !important;
+  color: #fff;
+}
+
+.btn-outline-dark {
+  color: var(--brand);
+  border-color: var(--brand);
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+/* Cards (Add/Edit/View pages, login) */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  background: #fff7ed;
+  border-bottom: 1px solid #fed7aa;
+  color: var(--brand-dark);
+}
+
+/* Dashboard */
+.page-title {
+  font-weight: 700;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 1.4rem 2.2rem;
+  min-width: 260px;
+}
+
+.stat-card h5 {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.stat-number {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.text-brand {
+  color: var(--brand);
+}
+
+.text-green {
+  color: #16a34a;
+}
+
+.records-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  padding: 1.8rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.records-card h4 {
+  font-weight: 500;
+  margin-bottom: 1.4rem;
+}
+
+.records-table th {
+  text-align: center;
+  font-weight: 700;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.records-table td {
+  padding: 1.1rem 1rem;
+  border-color: #e5e7eb;
+}
+
+/* Action icons */
+.action-icons svg {
+  cursor: pointer;
+}
+
+.icon-view {
+  color: #2563eb;
+}
+
+.icon-edit {
+  color: #d97706;
+}
+
+.icon-salary {
+  color: #16a34a;
+}
+
+.icon-delete {
+  color: #dc2626;
+}
+
+/* Footer */
+.app-footer {
+  background: var(--brand);
+  color: #fff;
+  padding: 1.25rem 0;
+}
+
+.app-footer-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.app-footer-link:hover {
+  text-decoration: underline;
+}
+
+.app-footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.app-footer-social a {
+  color: #fff;
+  opacity: 0.9;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.app-footer-social a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* Mobile & Responsive tweaks */
 @media (max-width: 767.98px) {
+  .app-header {
+    padding: 1rem;
+  }
+  .app-brand {
+    font-size: 1.35rem;
+  }
+  .app-toggler {
+    display: block;
+  }
+  .app-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding-top: 0.9rem;
+  }
+  .app-nav.open {
+    display: flex;
+  }
+  .records-card {
+    padding: 1.1rem;
+  }
+  .stat-card {
+    min-width: 100%;
+  }
   h2 {
     font-size: 1.5rem;
   }
   .card-body {
     padding: 1rem;
+  }
+  .app-footer {
+    font-size: 0.9rem;
+    padding: 1rem 0;
   }
 }
