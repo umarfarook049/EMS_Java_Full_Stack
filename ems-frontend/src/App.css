@@ -1,3 +1,97 @@
+/* ---------- Layout / sticky footer ---------- */
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  display: block; /* cancels the Vite template's flex centering */
+}
+
+#root {
+  max-width: none; /* cancels the Vite template's width limit */
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.app-shell {
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh; /* real visible height on phones */
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1 0 auto;
+}
+
+.app-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* ---------- Login ---------- */
+.login-page {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 480px;
+}
+
+.login-card .card-body {
+  padding: 2.25rem;
+}
+
+.login-card h2 {
+  font-weight: 700;
+  color: var(--brand-dark);
+}
+
+.login-card .form-control {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+}
+
+.login-card .btn {
+  padding: 0.8rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 767.98px) {
+  .login-page {
+    padding: 1.5rem 0.75rem;
+  }
+  .login-card {
+    max-width: 100%;
+  }
+  .done {
+    margin-top: 6.5rem;
+  }
+  .login-card .card-body {
+    padding: 1.75rem 1.25rem;
+  }
+  .login-card h2 {
+    font-size: 2rem;
+  }
+  .login-card .form-label {
+    font-size: 1.05rem;
+  }
+  .login-card .form-control {
+    padding: 0.9rem 1rem;
+    font-size: 1.1rem;
+  }
+  .login-card .btn {
+    padding: 0.95rem;
+    font-size: 1.2rem;
+  }
+}
+
 /* ---------- Theme ---------- */
 :root {
   --brand: #d97706;
@@ -286,4 +380,17 @@ body {
     font-size: 0.9rem;
     padding: 1rem 0;
   }
+}
+
+.our {
+  background-color: #d97706;
+  border: 1px black;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.6rem;
+}
+.our:hover {
+  background-color: white;
+  color: #d97706;
+  border: 1px solid #d97706;
 }

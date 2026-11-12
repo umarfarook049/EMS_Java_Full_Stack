@@ -12,9 +12,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="d-flex flex-column min-vh-100">
+        <div className="app-shell">
           <HeaderComponent />
-          <main className="flex-grow-1">
+          <main className="app-main">
             <Routes>
               <Route path="/login" element={<LoginComponent />} />
 

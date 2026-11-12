@@ -6,16 +6,19 @@ const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigator = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
     if (!username.trim() || !password) {
-      setError("Username and password are required");
+      setError("Company email or employee code and password are required");
       return;
     }
 
-    login(username, password)
+    setError("");
+    setLoading(true);
+    login(username.trim(), password)
       .then((res) => {
         const data = res.data;
         saveSession(data);
@@ -28,48 +31,55 @@ const LoginComponent = () => {
       .catch((err) => {
         setError(
           err.response?.status === 401
-            ? "Invalid username or password"
-            : "Unable to reach the server",
+            ? "Invalid credentials"
+            : "Unable to reach the server. If it was idle, wait a minute and try again.",
         );
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
-    <div className="container">
-      <br />
-      <br />
-      <br />
-      <div className="row">
-        <div className="card col-12 col-sm-10 col-md-6 col-lg-4 mx-auto">
-          <h2 className="text-center mt-2">Login</h2>
-          <div className="card-body">
-            {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleLogin}>
-              <div className="form-group mb-2">
-                <label className="form-label">
-                  Company Email or Employee Code :{" "}
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="form-group mb-2">
-                <label className="form-label">Password : </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="btn btn-dark mt-2">
-                Login
+    <div className="login-page">
+      <div className="card login-card done">
+        <div className="card-body">
+          <h2 className="text-center mb-4">Login</h2>
+
+          {error && <div className="alert alert-danger">{error}</div>}
+
+          <form onSubmit={handleLogin}>
+            <div className="mb-3">
+              <label className="form-label">
+                Company Email or Employee Code
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                value={username}
+                autoComplete="username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                autoComplete="current-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <div className="d-grid">
+              <button type="submit" className="our" disabled={loading}>
+                {loading ? "Signing in..." : "Login"}
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
